@@ -1,0 +1,3 @@
+-- Executar em sequência:
+-- 1) database/migrations/001_init.sql
+-- 2) database/seeds/001_plans.sql
