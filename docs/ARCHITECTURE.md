@@ -1,20 +1,23 @@
-# Arquitetura de Produto
+# Arquitetura — Fase 1
 
-## Camadas
-- **Controllers**: recebem requisição e coordenam caso de uso.
-- **Services**: regra de negócio (trial, billing, decisão de automação).
-- **Repositories**: persistência via PDO.
-- **Integrations**: adapters de API externa.
-- **Middleware**: autenticação, (futuro: tenant guard, assinatura, rate limit, CSRF).
+## Bootstrap
+- `public/index.php` recebe requests.
+- `bootstrap/app.php` inicializa autoload e aplicação.
+- `App\Core\Application` sobe container, config, PDO, logger e error handler.
 
-## Multi-tenancy
-Todas as tabelas operacionais possuem `tenant_id`; controle de acesso por sessão/perfil.
+## MVC
+- `Controllers` para coordenação HTTP.
+- `Services` para regras de negócio (fases seguintes).
+- `Repositories/Models` para persistência.
+- `Views/layouts` para renderização.
 
-## Billing
-Estados: `trial_active`, `trial_expired`, `active`, `past_due`, `suspended`, `cancelled`.
+## Pipeline HTTP
+1. Router resolve método + path.
+2. Middlewares executam (auth/tenant/subscription/admin).
+3. Dispatcher chama controller/método.
+4. `Response` retorna view/json/redirect.
 
-## WhatsApp
-Provider abstraction com status de instância e sessões de pareamento.
-
-## IA
-`AIProviderInterface` + `AIManager` para plugabilidade (Gemini/OpenRouter).
+## Robustez inicial
+- `ExceptionHandler` captura falhas globais.
+- `Logger` grava logs técnicos em `storage/logs`.
+- Estrutura pronta para cron/jobs e integrações externas.

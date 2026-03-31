@@ -1,9 +1,7 @@
 <?php ob_start(); ?>
-<h1>Dashboard Cliente</h1>
-<div class="grid">
-  <div class="card"><strong>Plano</strong><br><?= htmlspecialchars($data['subscription']['plan_name'] ?? '—') ?></div>
-  <div class="card"><strong>Status</strong><br><?= htmlspecialchars($data['subscription']['status'] ?? '—') ?></div>
-  <div class="card"><strong>Leads</strong><br><?= (int)($data['counts']['contacts'] ?? 0) ?></div>
-  <div class="card"><strong>Conversas</strong><br><?= (int)($data['counts']['conversations'] ?? 0) ?></div>
+<h1>Painel SaaS (Fase 1)</h1>
+<div class="cards">
+  <article class="card"><h3>Arquitetura</h3><p>Bootstrap, router, middlewares e logger ativos.</p></article>
+  <article class="card"><h3>Próxima fase</h3><p>Entram regras de negócio, billing e módulos operacionais.</p></article>
 </div>
 <?php $content = ob_get_clean(); require __DIR__ . '/../layouts/main.php'; ?>

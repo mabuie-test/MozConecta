@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="/assets/app.css">
 </head>
 <body>
-<?= $content ?? '' ?>
+  <nav class="topbar">
+    <div class="brand">MozConecta</div>
+    <div class="links"><a href="/">Home</a><a href="/login">Login</a><a href="/dashboard">Painel</a></div>
+  </nav>
+  <main class="container"><?= $content ?? '' ?></main>
 </body>
 </html>

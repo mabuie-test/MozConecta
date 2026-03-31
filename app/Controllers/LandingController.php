@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Core\BaseController;
 use App\Support\Request;
-use App\Support\Response;
 
-final class LandingController
+final class LandingController extends BaseController
 {
     public function index(Request $request): void
     {
-        Response::view('landing/index', ['title' => 'MozConecta SaaS']);
+        $this->view('landing/index', ['title' => 'MozConecta SaaS']);
     }
 }

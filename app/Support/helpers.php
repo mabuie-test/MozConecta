@@ -5,11 +5,12 @@ function env(string $key, mixed $default = null): mixed
 {
     static $loaded = false;
     if (!$loaded) {
-        $path = dirname(__DIR__, 2) . '/.env';
+        $path = base_path('.env');
         if (is_file($path)) {
             $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
             foreach ($lines as $line) {
-                if (str_starts_with(trim($line), '#') || !str_contains($line, '=')) {
+                $line = trim($line);
+                if ($line === '' || str_starts_with($line, '#') || !str_contains($line, '=')) {
                     continue;
                 }
                 [$k, $v] = explode('=', $line, 2);
@@ -18,7 +19,14 @@ function env(string $key, mixed $default = null): mixed
         }
         $loaded = true;
     }
-    return $_ENV[$key] ?? $default;
+
+    $value = $_ENV[$key] ?? $default;
+    return match ($value) {
+        'true', '(true)' => true,
+        'false', '(false)' => false,
+        'null', '(null)' => null,
+        default => $value,
+    };
 }
 
 function base_path(string $path = ''): string

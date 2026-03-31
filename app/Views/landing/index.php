@@ -1,11 +1,15 @@
 <?php ob_start(); ?>
-<header class="hero">
-  <h1>Central completa de atendimento, vendas, CRM e automação via WhatsApp</h1>
-  <p>SaaS multi-tenant com IA, funil comercial, campanhas e billing local M-Pesa/eMola.</p>
-  <a class="btn" href="/register">Iniciar trial grátis de 24 horas</a>
-</header>
-<section><h2>Vantagens</h2><ul><li>Inbox multiatendente</li><li>CRM + Funil visual</li><li>Automações híbridas com IA</li></ul></section>
-<section><h2>Planos</h2><p>Do Trial 24h ao Enterprise, com escalabilidade por consumo.</p></section>
-<section><h2>Pagamento seguro via M-Pesa e eMola</h2><p>Conciliação por webhook com idempotência e auditoria.</p></section>
-<section><h2>FAQ</h2><p>Trial expira em 24h, sem bloqueio de login, mas com recursos restritos.</p></section>
-<?php $content = ob_get_clean(); $title='MozConecta - SaaS WhatsApp'; require __DIR__ . '/../layouts/main.php'; ?>
+<section class="hero">
+  <h1>Automação comercial via WhatsApp para operações reais</h1>
+  <p>Base SaaS multi-tenant pronta para evolução com CRM, IA, campanhas, billing e integrações API.</p>
+  <div class="actions">
+    <a class="btn" href="/register">Iniciar trial 24h</a>
+    <a class="btn btn-secondary" href="/login">Acessar painel</a>
+  </div>
+</section>
+<section class="cards">
+  <article class="card"><h3>MVC profissional</h3><p>Separação limpa entre Controllers, Services, Repositories e Integrations.</p></article>
+  <article class="card"><h3>Pronto para shared hosting/VPS</h3><p>Document root em <code>public/</code> e bootstrap leve.</p></article>
+  <article class="card"><h3>Escalável</h3><p>Camadas preparadas para WhatsApp, IA, pagamentos e jobs assíncronos.</p></article>
+</section>
+<?php $content = ob_get_clean(); require __DIR__ . '/../layouts/main.php'; ?>

@@ -1,56 +1,45 @@
-# MozConecta SaaS (PHP 8.2 + MySQL 8)
+# MozConecta SaaS — FASE 1 (Fundação Arquitetural)
 
-Plataforma SaaS multi-tenant de automação comercial via WhatsApp com CRM, funil, automações, IA e billing local.
+Base arquitetural completa em **PHP 8.2+** com **MySQL/MariaDB**, preparada para evolução de produto SaaS multi-tenant.
 
-## Arquitetura
-- MVC clássico com separação: Controllers, Services, Repositories, Integrations e Middleware.
-- Multi-tenant com isolamento por `tenant_id`.
-- PDO + prepared statements.
-- Camadas de integração desacopladas para WhatsApp, IA e pagamentos.
-
-## Estrutura
-Consulte pastas `app/`, `config/`, `routes/`, `database/`, `public/` e `storage/`.
-
-## Requisitos
+## Stack
 - PHP 8.2+
-- MySQL 8+ ou MariaDB compatível
-- Extensão PDO MySQL
+- PDO (MySQL/MariaDB)
+- MVC clássico
+- Frontend HTML/CSS/JS
+- Composer autoload PSR-4
+
+## Entregas da Fase 1
+- Estrutura de diretórios profissional (`app`, `bootstrap`, `config`, `routes`, `database`, `public`, `storage`, `tests`).
+- `composer.json` com autoload `App\\`.
+- Bootstrap central (`bootstrap/app.php`) + front controller (`public/index.php`).
+- Configuração por `.env` e arquivos de config centralizada.
+- Router com suporte a `GET/POST/PUT/PATCH/DELETE`.
+- Dispatcher de controllers + middleware pipeline.
+- Classes base: `BaseController`, `BaseModel`, `BaseRepository`, `BaseService`, `Request`, `Response`.
+- Middlewares iniciais: `AuthMiddleware`, `TenantMiddleware`, `SubscriptionMiddleware`, `AdminMiddleware`.
+- Tratamento global de erros e exceções + logger técnico em `storage/logs/app.log`.
+- Layout base da landing e painel.
+- Estrutura inicial para jobs e integrações (`WhatsApp`, `AI`, `Payments`, `Media`).
 
 ## Instalação
-1. Copiar `.env.example` para `.env` e preencher variáveis.
-2. Criar base de dados.
-3. Executar SQL:
-   - `database/migrations/001_init.sql`
-   - `database/seeds/001_plans.sql`
-4. Servir pasta `public/` como document root.
+1. Copie `.env.example` para `.env`.
+2. Configure credenciais de base de dados.
+3. Instale autoload:
+   ```bash
+   composer install
+   ```
+4. Execute localmente:
+   ```bash
+   php -S localhost:8080 -t public
+   ```
 
-Exemplo local:
+> Para shared hosting: defina **document root** para `public/`.
+
+## Testes rápidos
 ```bash
-php -S localhost:8080 -t public
+bash tests/smoke.sh
 ```
 
-## Fluxo de trial 24h
-No registo, cria-se tenant + owner + assinatura `trial_active` com fim em +24h.
-
-## Módulos incluídos (base de produto)
-- Landing comercial
-- Auth/registro/login
-- Dashboard cliente
-- Dashboard admin global
-- Billing e assinaturas (estrutura + serviços)
-- Pagamentos M-Pesa/eMola (interfaces e stubs)
-- Instâncias WhatsApp (serviços base)
-- Engine de automação híbrida (decisor)
-- Banco com schema completo para CRM, inbox, campanhas, funis, tasks, IA, webhooks e auditoria.
-
-## Segurança
-- `password_hash/password_verify`
-- Prepared statements
-- Base para RBAC e middleware de autenticação
-- Tabelas de auditoria e webhooks idempotentes
-
-## Próximas evoluções
-- CSRF middleware e rate limiting persistente
-- workers/cron para jobs assíncronos
-- interfaces completas de inbox/funil/campanhas
-- provedores reais de API
+## Próxima fase
+Implementação dos módulos de negócio (autenticação completa, assinatura, billing, WhatsApp, inbox, CRM, funil, IA, campanhas e admin operacional).
