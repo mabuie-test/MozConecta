@@ -28,6 +28,18 @@ final class Router
             return;
         }
 
+
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH', 'DELETE'], true)
+            && !str_starts_with($request->path(), '/webhooks')
+            && filter_var((string)env('CSRF_ENABLED', 'true'), FILTER_VALIDATE_BOOLEAN)
+        ) {
+            $token = (string)($request->input('_token', $request->header('X-CSRF-TOKEN', null)));
+            if (!csrf_check($token)) {
+                Response::json(['error' => 'csrf_token_invalid'], 419);
+                return;
+            }
+        }
+
         foreach ($route['middleware'] as $entry) {
             $params = [];
             $middlewareClass = $entry;

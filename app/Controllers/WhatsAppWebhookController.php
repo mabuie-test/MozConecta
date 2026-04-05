@@ -16,7 +16,8 @@ final class WhatsAppWebhookController extends BaseController
     public function inbound(Request $request): void
     {
         $secret = (string)$request->input('secret', $request->server('HTTP_X_WEBHOOK_SECRET', ''));
-        $this->service->handle($request->all(), $secret);
+        $signature = (string)$request->header('X-WEBHOOK-SIGNATURE', '');
+        $this->service->handle($request->all(), $secret, $request->rawBody(), $signature ?: null);
         $this->json(['ok' => true]);
     }
 }

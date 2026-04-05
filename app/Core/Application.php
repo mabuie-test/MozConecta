@@ -41,6 +41,11 @@ final class Application
 
     public function run(): void
     {
+
+        header('X-Frame-Options: SAMEORIGIN');
+        header('X-Content-Type-Options: nosniff');
+        header('Referrer-Policy: strict-origin-when-cross-origin');
+        header('X-XSS-Protection: 1; mode=block');
         (require $this->basePath . '/routes/web.php')($this->router);
         $this->router->dispatch(new Request(), $this->container);
     }

@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?= htmlspecialchars($title ?? 'MozConecta') ?></title>
+  <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
+  <title><?= e($title ?? 'MozConecta') ?></title>
   <link rel="stylesheet" href="/assets/app.css">
 </head>
 <body>
@@ -26,7 +27,7 @@
         <a href="/billing/plans">Planos</a>
         <a href="/billing/history">Financeiro</a>
         <a href="/profile">Perfil</a>
-        <form method="post" action="/logout" class="inline-form"><button type="submit">Sair</button></form>
+        <form method="post" action="/logout" class="inline-form"><?= csrf_field() ?><button type="submit">Sair</button></form>
       <?php else: ?>
         <a href="/login">Login</a>
         <a href="/register">Registo</a>
@@ -34,5 +35,20 @@
     </div>
   </nav>
   <main class="container"><?= $content ?? '' ?></main>
+  <script>
+    (() => {
+      const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+      if (!token) return;
+      document.querySelectorAll('form[method="post"], form[method="POST"]').forEach((form) => {
+        if (!form.querySelector('input[name="_token"]')) {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = '_token';
+          input.value = token;
+          form.appendChild(input);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

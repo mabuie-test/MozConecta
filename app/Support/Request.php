@@ -29,9 +29,20 @@ final class Request
 
     public function all(): array
     {
-        $raw = file_get_contents('php://input') ?: '';
+        $raw = $this->rawBody();
         $json = json_decode($raw, true);
         return array_merge($_GET, $_POST, is_array($json) ? $json : []);
+    }
+
+    public function rawBody(): string
+    {
+        return file_get_contents('php://input') ?: "";
+    }
+
+    public function header(string $name, mixed $default = null): mixed
+    {
+        $key = "HTTP_" . strtoupper(str_replace("-", "_", $name));
+        return $_SERVER[$key] ?? $default;
     }
 
     public function server(string $key, mixed $default = null): mixed

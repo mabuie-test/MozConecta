@@ -21,18 +21,19 @@ use App\Middleware\AuthMiddleware;
 use App\Middleware\ProfileMiddleware;
 use App\Middleware\SubscriptionMiddleware;
 use App\Middleware\TenantMiddleware;
+use App\Middleware\RateLimitMiddleware;
 
 return function (App\Support\Router $router): void {
     $router->get('/', [LandingController::class, 'index']);
 
     $router->get('/login', [AuthController::class, 'showLogin']);
-    $router->post('/login', [AuthController::class, 'login']);
+    $router->post('/login', [AuthController::class, 'login'], [RateLimitMiddleware::class . ':10,60']);
     $router->get('/register', [AuthController::class, 'showRegister']);
-    $router->post('/register', [AuthController::class, 'register']);
+    $router->post('/register', [AuthController::class, 'register'], [RateLimitMiddleware::class . ':5,300']);
     $router->post('/logout', [AuthController::class, 'logout'], [AuthMiddleware::class]);
 
     $router->get('/forgot-password', [AuthController::class, 'showForgotPassword']);
-    $router->post('/forgot-password', [AuthController::class, 'requestPasswordReset']);
+    $router->post('/forgot-password', [AuthController::class, 'requestPasswordReset'], [RateLimitMiddleware::class . ':5,300']);
     $router->get('/reset-password', [AuthController::class, 'showResetPassword']);
     $router->post('/reset-password', [AuthController::class, 'resetPassword']);
 
@@ -45,6 +46,7 @@ return function (App\Support\Router $router): void {
     $router->post('/profile/change-password', [ProfileController::class, 'changePassword'], $authTenantSub);
 
     $router->get('/admin', [AdminController::class, 'index'], [AuthMiddleware::class, TenantMiddleware::class, ProfileMiddleware::class . ':owner,admin']);
+    $router->post('/admin/cms/save', [AdminController::class, 'saveCms'], [AuthMiddleware::class, TenantMiddleware::class, ProfileMiddleware::class . ':owner,admin']);
 
     // Billing / checkout
     $router->get('/billing/plans', [BillingController::class, 'plans'], $authTenant);
@@ -125,5 +127,5 @@ return function (App\Support\Router $router): void {
     $router->post('/notifications/read', [NotificationController::class, 'markRead'], $authTenantSub);
 
     // Webhook inbound (provider -> plataforma)
-    $router->post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'inbound']);
+    $router->post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'inbound'], [RateLimitMiddleware::class . ':300,60']);
 };

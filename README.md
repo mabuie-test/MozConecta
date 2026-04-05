@@ -133,3 +133,29 @@ Esta fase adiciona marketing operacional e alertas internos:
   - lote controlado, pausa/retoma/cancelamento e relatório de campanha
   - pacotes e pedidos de internet com tagging automático
   - notificações para nova mensagem, novo lead, pagamento, trial, tarefa vencida, instância desconectada, campanha concluída e limite próximo
+
+
+## FASE 10 — Finalização de produto (dashboards, admin, segurança e operação)
+
+Entregas consolidadas desta fase:
+
+- Dashboard cliente com métricas de plano, consumo, IA, instâncias, leads, tarefas, campanhas e alertas.
+- Painel admin global com métricas multiempresa, auditoria e CMS básico da landing.
+- Segurança reforçada: CSRF, rate limit por rota crítica, headers de segurança e validação opcional de assinatura HMAC para webhook WhatsApp.
+- Auditoria e logs técnicos por integração (pagamentos, WhatsApp, IA, autenticação e mudanças críticas).
+
+Documentação operacional:
+- `docs/OPERATIONS.md`
+- `docs/API_ROUTES.md`
+
+### Instalação
+1. `cp .env.example .env`
+2. Ajustar DB/API keys no `.env`
+3. Executar SQL na ordem de `database/schema.sql`
+4. Executar seeds em `database/seeds`
+5. `composer test`
+
+### Operação
+- Usar `php -S 0.0.0.0:8080 -t public` para ambiente local.
+- Monitorar `storage/logs/app.log` e tabelas de logs/auditoria.
+- Processar rotinas de polling/schedules/jobs periodicamente em cron.

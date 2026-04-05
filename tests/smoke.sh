@@ -61,3 +61,11 @@ php -l app/Repositories/NotificationRepository.php
 php -l app/Views/campaigns/index.php
 php -l app/Views/internet/index.php
 php -l app/Views/notifications/index.php
+
+php -l app/Middleware/RateLimitMiddleware.php
+php -l app/Support/Crypto.php
+php -l app/Controllers/AdminController.php
+php -l app/Services/AdminService.php
+php -l app/Controllers/DashboardController.php
+php -l app/Repositories/NotificationRepository.php
+php -l app/Views/admin/index.php
