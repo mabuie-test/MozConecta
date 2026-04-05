@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+set -euo pipefail
+php -l public/index.php
+php -l bootstrap/app.php
+php -l app/Core/Application.php
+php -l app/Support/Router.php
+php -l app/Controllers/WhatsAppInstanceController.php
+php -l app/Integrations/WhatsApp/ProviderManager.php
+php -l app/Integrations/WhatsApp/WhatsAppInstanceService.php
+php -l app/Integrations/WhatsApp/PairingService.php
+php -l app/Integrations/WhatsApp/SessionSyncService.php
+php -l app/Repositories/WhatsAppInstanceRepository.php
+php -l app/Repositories/WhatsAppPairingSessionRepository.php
+php -l app/Repositories/WhatsAppInstanceEventRepository.php
+
+php -l app/Controllers/InboxController.php
+php -l app/Controllers/CRMController.php
+php -l app/Services/InboxService.php
+php -l app/Services/CRMService.php
+php -l app/Repositories/ConversationRepository.php
+php -l app/Repositories/ConversationMessageRepository.php
+php -l app/Repositories/ContactRepository.php
+php -l app/Repositories/FunnelRepository.php
+
+php -l app/Controllers/TaskController.php
+php -l app/Controllers/FlowController.php
+php -l app/Services/TaskService.php
+php -l app/Services/FlowBuilderService.php
+php -l app/Services/AutomationEngineService.php
+php -l app/Repositories/TaskRepository.php
+php -l app/Repositories/ScheduleRepository.php
+php -l app/Repositories/ChatbotFlowRepository.php
+php -l app/Repositories/ChatbotNodeRepository.php
+php -l app/Repositories/ChatbotEdgeRepository.php
+php -l app/Repositories/ChatbotExecutionLogRepository.php
+
+php -l app/Controllers/AIController.php
+php -l app/Services/HybridDecisionService.php
+php -l app/Services/PromptBuilderService.php
+php -l app/Services/IntentClassifierService.php
+php -l app/Services/ConversationMemoryService.php
+php -l app/Services/AIUsageService.php
+php -l app/Services/FallbackBotService.php
+php -l app/Repositories/AssistantProfileRepository.php
+php -l app/Repositories/AIPromptRepository.php
+php -l app/Repositories/AIUsageLogRepository.php
+php -l app/Integrations/AI/OpenRouterProvider.php
+php -l app/Integrations/AI/GeminiProvider.php
+
+php -l app/Controllers/CampaignController.php
+php -l app/Controllers/InternetSalesController.php
+php -l app/Controllers/NotificationController.php
+php -l app/Services/CampaignService.php
+php -l app/Services/InternetSalesBotService.php
+php -l app/Services/NotificationService.php
+php -l app/Repositories/CampaignRepository.php
+php -l app/Repositories/CampaignContactRepository.php
+php -l app/Repositories/InternetPackageRepository.php
+php -l app/Repositories/InternetOrderRepository.php
+php -l app/Repositories/NotificationRepository.php
+php -l app/Views/campaigns/index.php
+php -l app/Views/internet/index.php
+php -l app/Views/notifications/index.php
+
+php -l app/Middleware/RateLimitMiddleware.php
+php -l app/Support/Crypto.php
+php -l app/Controllers/AdminController.php
+php -l app/Services/AdminService.php
+php -l app/Controllers/DashboardController.php
+php -l app/Repositories/NotificationRepository.php
+php -l app/Views/admin/index.php
