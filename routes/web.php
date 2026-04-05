@@ -6,6 +6,8 @@ use App\Controllers\AuthController;
 use App\Controllers\BillingController;
 use App\Controllers\DashboardController;
 use App\Controllers\LandingController;
+use App\Controllers\InboxController;
+use App\Controllers\CRMController;
 use App\Controllers\ProfileController;
 use App\Controllers\WhatsAppInstanceController;
 use App\Controllers\WhatsAppWebhookController;
@@ -57,6 +59,22 @@ return function (App\Support\Router $router): void {
     $router->post('/whatsapp/instances/delete', [WhatsAppInstanceController::class, 'delete'], $authTenantSub);
     $router->post('/whatsapp/instances/sync', [WhatsAppInstanceController::class, 'sync'], $authTenantSub);
     $router->get('/whatsapp/instances/show', [WhatsAppInstanceController::class, 'show'], $authTenantSub);
+
+
+    // Inbox e CRM
+    $router->get('/inbox', [InboxController::class, 'index'], $authTenantSub);
+    $router->get('/inbox/show', [InboxController::class, 'show'], $authTenantSub);
+    $router->post('/inbox/send', [InboxController::class, 'send'], $authTenantSub);
+    $router->post('/inbox/note', [InboxController::class, 'addNote'], $authTenantSub);
+    $router->post('/inbox/assign', [InboxController::class, 'assign'], $authTenantSub);
+    $router->post('/inbox/takeover', [InboxController::class, 'takeover'], $authTenantSub);
+    $router->post('/inbox/status', [InboxController::class, 'changeStatus'], $authTenantSub);
+
+    $router->get('/crm/contacts', [CRMController::class, 'index'], $authTenantSub);
+    $router->post('/crm/contacts/store', [CRMController::class, 'store'], $authTenantSub);
+    $router->post('/crm/contacts/update', [CRMController::class, 'update'], $authTenantSub);
+    $router->get('/crm/pipeline', [CRMController::class, 'pipeline'], $authTenantSub);
+    $router->post('/crm/pipeline/move', [CRMController::class, 'moveStage'], $authTenantSub);
 
     // Webhook inbound (provider -> plataforma)
     $router->post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'inbound']);

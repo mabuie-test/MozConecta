@@ -12,3 +12,12 @@ php -l app/Integrations/WhatsApp/SessionSyncService.php
 php -l app/Repositories/WhatsAppInstanceRepository.php
 php -l app/Repositories/WhatsAppPairingSessionRepository.php
 php -l app/Repositories/WhatsAppInstanceEventRepository.php
+
+php -l app/Controllers/InboxController.php
+php -l app/Controllers/CRMController.php
+php -l app/Services/InboxService.php
+php -l app/Services/CRMService.php
+php -l app/Repositories/ConversationRepository.php
+php -l app/Repositories/ConversationMessageRepository.php
+php -l app/Repositories/ContactRepository.php
+php -l app/Repositories/FunnelRepository.php

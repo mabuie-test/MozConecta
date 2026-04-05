@@ -7,3 +7,11 @@
 input,select{display:block;width:100%;padding:10px;margin:8px 0 12px;border-radius:10px;border:1px solid #2b3f73;background:#0e1732;color:var(--text)}label{font-size:13px;color:var(--muted)}
 .error{color:var(--danger);background:#3a1b23;padding:8px 10px;border-radius:8px}.success{color:#86efac;background:#123a26;padding:8px 10px;border-radius:8px}.muted{color:var(--muted)}.badge{background:#2f457f;padding:4px 8px;border-radius:999px;font-size:12px}
 .inline-form{display:inline}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #20325f;text-align:left}
+.timeline{display:flex;flex-direction:column;gap:10px;max-height:420px;overflow:auto}
+.msg{padding:10px;border-radius:10px;border:1px solid #2a3e72}
+.msg-inbound{background:#0e2a1e}
+.msg-outbound{background:#1a2444}
+.msg-system{background:#37261a}
+.pipeline-grid{display:grid;grid-template-columns:repeat(7,minmax(220px,1fr));gap:12px;overflow-x:auto}
+.pipeline-col{min-height:240px}
+.pipeline-card{background:#0b1734;border:1px solid #22376a;border-radius:10px;padding:10px;margin-bottom:10px}

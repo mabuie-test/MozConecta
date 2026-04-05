@@ -108,3 +108,16 @@
 ### whatsapp_instance_events
 - Trilhas técnicas de eventos (create, pair, sync, reconnect, inbound/outbound).
 - Base para observabilidade e troubleshooting.
+
+
+## FASE 6 — Inbox, CRM e Pipeline
+
+Tabelas adicionadas:
+- `contacts`: base de contactos/leads por tenant, com prioridade, origem, valor potencial e estágio do funil.
+- `tags` e `contact_tags`: etiquetagem de contactos.
+- `conversations`: thread de inbox por contacto com estado, responsável e takeover.
+- `conversation_messages`: timeline de mensagens inbound/outbound/system e payload técnico.
+- `funnels` e `funnel_stages`: pipeline comercial visual por tenant.
+- `lead_scores`: score agregado básico por contacto.
+
+Índices operacionais cobrem: busca por tenant/status, timeline por conversa, score por tenant e filtros de CRM.

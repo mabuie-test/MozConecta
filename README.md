@@ -55,3 +55,23 @@ mysql -u root -p mozconecta < database/migrations/002_auth_onboarding_security.s
 mysql -u root -p mozconecta < database/migrations/003_billing_debito.sql
 mysql -u root -p mozconecta < database/migrations/004_whatsapp_instances.sql
 ```
+
+
+## FASE 6 — Inbox, CRM e Pipeline
+
+Esta fase adiciona `inbox` multiatendente e CRM nativo com pipeline visual:
+
+- Migration: `database/migrations/005_inbox_crm_pipeline.sql`
+- Novos módulos web:
+  - `/inbox` e `/inbox/show`
+  - `/crm/contacts`
+  - `/crm/pipeline`
+- Serviços:
+  - `App\Services\InboxService`
+  - `App\Services\CRMService`
+- Recursos principais:
+  - timeline com mensagens recebidas/enviadas/notas internas
+  - filtros e busca em inbox e CRM
+  - atribuição, takeover e mudança de estado de conversa
+  - lead score básico por engajamento/valor/prioridade
+  - movimentação de lead entre estágios com auditoria

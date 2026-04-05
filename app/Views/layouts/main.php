@@ -14,6 +14,9 @@
       <?php if (!empty($_SESSION['user_id'])): ?>
         <a href="/dashboard">Painel</a>
         <a href="/whatsapp/instances">WhatsApp</a>
+        <a href="/inbox">Inbox</a>
+        <a href="/crm/contacts">CRM</a>
+        <a href="/crm/pipeline">Pipeline</a>
         <a href="/billing/plans">Planos</a>
         <a href="/billing/history">Financeiro</a>
         <a href="/profile">Perfil</a>
