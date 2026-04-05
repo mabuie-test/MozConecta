@@ -53,6 +53,9 @@ return function (App\Support\Router $router): void {
     $router->get('/billing/checkout', [BillingController::class, 'checkoutPage'], $authTenant);
     $router->post('/billing/checkout', [BillingController::class, 'checkout'], $authTenant);
     $router->get('/billing/payment-status', [BillingController::class, 'paymentStatus'], $authTenant);
+    $router->get('/billing/payment-detail', [BillingController::class, 'paymentDetail'], $authTenant);
+    $router->post('/billing/payment-status/recheck', [BillingController::class, 'manualRecheck'], $authTenant);
+    $router->post('/billing/payment/retry', [BillingController::class, 'retry'], $authTenant);
     $router->get('/billing/history', [BillingController::class, 'history'], $authTenant);
     $router->get('/billing/subscription', [BillingController::class, 'subscription'], $authTenant);
     $router->post('/billing/change-plan', [BillingController::class, 'changePlan'], $authTenant);
@@ -128,4 +131,5 @@ return function (App\Support\Router $router): void {
 
     // Webhook inbound (provider -> plataforma)
     $router->post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'inbound'], [RateLimitMiddleware::class . ':300,60']);
+    $router->post('/webhooks/debito', [BillingController::class, 'debitoWebhook'], [RateLimitMiddleware::class . ':120,60']);
 };

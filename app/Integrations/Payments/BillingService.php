@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Integrations\Payments;
 
 use App\Repositories\InvoiceRepository;
+use App\Repositories\PaymentRepository;
 use App\Repositories\PlanRepository;
 use App\Repositories\SubscriptionRepository;
 
@@ -13,6 +14,7 @@ final class BillingService
         private readonly InvoiceRepository $invoices,
         private readonly PlanRepository $plans,
         private readonly SubscriptionRepository $subscriptions,
+        private readonly PaymentRepository $payments,
     ) {
     }
 
@@ -30,10 +32,10 @@ final class BillingService
 
         $invoiceId = $this->invoices->create(
             $tenantId,
-            (int)$subscription['id'],
-            (int)$plan['id'],
-            (float)$plan['price_mt'],
-            (string)$plan['currency']
+            (int) $subscription['id'],
+            (int) $plan['id'],
+            (float) $plan['price_mt'],
+            (string) $plan['currency']
         );
 
         return $this->invoices->findById($invoiceId) ?? [];
@@ -46,6 +48,10 @@ final class BillingService
 
     public function financialHistory(int $tenantId): array
     {
-        return $this->invoices->listByTenant($tenantId);
+        return [
+            'invoices' => $this->invoices->listByTenant($tenantId),
+            'payments' => $this->payments->listByTenantDetailed($tenantId),
+            'subscription' => $this->subscriptions->latestByTenant($tenantId),
+        ];
     }
 }

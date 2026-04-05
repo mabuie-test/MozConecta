@@ -41,3 +41,8 @@
 ## Admin global
 - `GET /admin`
 - `POST /admin/cms/save`
+
+- `GET /billing/payment-detail`
+- `POST /billing/payment-status/recheck`
+- `POST /billing/payment/retry`
+- `POST /webhooks/debito` (callback opcional)

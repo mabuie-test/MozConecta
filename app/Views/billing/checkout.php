@@ -12,7 +12,7 @@
       <option value="emola">eMola</option>
     </select>
     <label>Número (MSISDN)</label>
-    <input name="msisdn" required>
+    <input name="msisdn" placeholder="Ex: 841234567 ou 258841234567" required>
     <label>Notas internas (opcional)</label>
     <input name="internal_notes">
     <button type="submit">Iniciar cobrança</button>
