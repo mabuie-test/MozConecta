@@ -7,6 +7,8 @@ use App\Controllers\BillingController;
 use App\Controllers\DashboardController;
 use App\Controllers\LandingController;
 use App\Controllers\ProfileController;
+use App\Controllers\WhatsAppInstanceController;
+use App\Controllers\WhatsAppWebhookController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\ProfileMiddleware;
 use App\Middleware\SubscriptionMiddleware;
@@ -36,7 +38,7 @@ return function (App\Support\Router $router): void {
 
     $router->get('/admin', [AdminController::class, 'index'], [AuthMiddleware::class, TenantMiddleware::class, ProfileMiddleware::class . ':owner,admin']);
 
-    // Billing / checkout (acessível com trial expirado)
+    // Billing / checkout
     $router->get('/billing/plans', [BillingController::class, 'plans'], $authTenant);
     $router->get('/billing/checkout', [BillingController::class, 'checkoutPage'], $authTenant);
     $router->post('/billing/checkout', [BillingController::class, 'checkout'], $authTenant);
@@ -44,4 +46,18 @@ return function (App\Support\Router $router): void {
     $router->get('/billing/history', [BillingController::class, 'history'], $authTenant);
     $router->get('/billing/subscription', [BillingController::class, 'subscription'], $authTenant);
     $router->post('/billing/change-plan', [BillingController::class, 'changePlan'], $authTenant);
+
+    // WhatsApp instances
+    $router->get('/whatsapp/instances', [WhatsAppInstanceController::class, 'index'], $authTenantSub);
+    $router->post('/whatsapp/instances/create', [WhatsAppInstanceController::class, 'create'], $authTenantSub);
+    $router->post('/whatsapp/instances/edit', [WhatsAppInstanceController::class, 'edit'], $authTenantSub);
+    $router->post('/whatsapp/instances/pair', [WhatsAppInstanceController::class, 'startPairing'], $authTenantSub);
+    $router->post('/whatsapp/instances/reconnect', [WhatsAppInstanceController::class, 'reconnect'], $authTenantSub);
+    $router->post('/whatsapp/instances/disconnect', [WhatsAppInstanceController::class, 'disconnect'], $authTenantSub);
+    $router->post('/whatsapp/instances/delete', [WhatsAppInstanceController::class, 'delete'], $authTenantSub);
+    $router->post('/whatsapp/instances/sync', [WhatsAppInstanceController::class, 'sync'], $authTenantSub);
+    $router->get('/whatsapp/instances/show', [WhatsAppInstanceController::class, 'show'], $authTenantSub);
+
+    // Webhook inbound (provider -> plataforma)
+    $router->post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'inbound']);
 };

@@ -1,25 +1,23 @@
-# Arquitetura — FASE 4
+# Arquitetura — FASE 5
 
-## Billing desacoplado
-A integração de pagamentos está em `app/Integrations/Payments` com providers separados por método de cobrança:
-- `DebitoMpesaProvider`
-- `DebitoEmolaProvider`
+## Módulo WhatsApp desacoplado
+- Interface de provider: `WhatsAppProviderInterface`.
+- Gestão de provider: `ProviderManager`.
+- Serviços de domínio:
+  - `WhatsAppInstanceService`
+  - `PairingService`
+  - `SessionSyncService`
+  - `MessageInboundProcessor`
+  - `MessageOutboundDispatcher`
+  - `WebhookInboundService`
 
-`PaymentService` coordena checkout, persistência e logs.
+## Persistência
+- `whatsapp_instances`
+- `whatsapp_pairing_sessions`
+- `whatsapp_instance_events`
 
-## Serviços de pagamento
-- `BillingService`: planos, invoice e histórico financeiro.
-- `PaymentService`: inicia cobrança e grava referências do gateway.
-- `PaymentStatusPollingService`: consulta estado e actualiza subscrição.
-- `SubscriptionService`: activa/falha assinatura conforme pagamento.
-- `WebhookPaymentService`: preparado para callbacks.
-
-## Persistência e auditoria
-- `invoices`, `payments`, `payment_transactions` com campos de provider.
-- `payment_provider_logs` para logs técnicos de request/response.
-- `audit_logs` para rastreabilidade de eventos de cobrança.
-
-## Segurança operacional
-- autenticação Débito com token cacheado e renovação automática.
-- timeout configurável por env.
-- payloads e respostas guardadas para troubleshooting.
+## Operações
+- CRUD de instâncias no painel.
+- Pareamento e exibição de QR.
+- Reconexão/desconexão e sync periódico.
+- Trilhas técnicas de eventos para observabilidade.

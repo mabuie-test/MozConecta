@@ -13,7 +13,12 @@ return [
         ],
     ],
     'whatsapp' => [
-        'default' => env('WHATSAPP_DEFAULT_PROVIDER', 'mock'),
+        'default' => env('WHATSAPP_PROVIDER_DEFAULT', 'generic_api'),
+        'api_base_url' => env('WHATSAPP_API_BASE_URL', ''),
+        'api_key' => env('WHATSAPP_API_KEY', ''),
+        'webhook_secret' => env('WHATSAPP_WEBHOOK_SECRET', ''),
+        'sync_enabled' => (bool) env('WHATSAPP_SYNC_ENABLED', true),
+        'sync_interval' => (int) env('WHATSAPP_SYNC_INTERVAL', 120),
     ],
     'ai' => [
         'default' => env('AI_DEFAULT_PROVIDER', 'openrouter'),

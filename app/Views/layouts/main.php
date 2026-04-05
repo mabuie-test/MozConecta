@@ -13,6 +13,7 @@
       <a href="/">Home</a>
       <?php if (!empty($_SESSION['user_id'])): ?>
         <a href="/dashboard">Painel</a>
+        <a href="/whatsapp/instances">WhatsApp</a>
         <a href="/billing/plans">Planos</a>
         <a href="/billing/history">Financeiro</a>
         <a href="/profile">Perfil</a>

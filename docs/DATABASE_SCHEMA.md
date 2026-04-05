@@ -94,3 +94,17 @@
 ### verification_tokens
 - Estrutura de verificação por email/OTP.
 - Preparado para integração de providers externos de envio.
+
+## Extensões FASE 5 (WhatsApp)
+
+### whatsapp_instances
+- Guarda estado operacional de cada instância por tenant.
+- Inclui status de conexão, QR, session token, erro técnico e metadata.
+
+### whatsapp_pairing_sessions
+- Histórico de tentativas/sessões de pareamento.
+- Guarda QR e payload retornado pelo provider.
+
+### whatsapp_instance_events
+- Trilhas técnicas de eventos (create, pair, sync, reconnect, inbound/outbound).
+- Base para observabilidade e troubleshooting.
