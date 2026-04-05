@@ -9,9 +9,12 @@ use App\Controllers\DashboardController;
 use App\Controllers\LandingController;
 use App\Controllers\InboxController;
 use App\Controllers\CRMController;
+use App\Controllers\CampaignController;
 use App\Controllers\FlowController;
+use App\Controllers\InternetSalesController;
 use App\Controllers\TaskController;
 use App\Controllers\ProfileController;
+use App\Controllers\NotificationController;
 use App\Controllers\WhatsAppInstanceController;
 use App\Controllers\WhatsAppWebhookController;
 use App\Middleware\AuthMiddleware;
@@ -100,6 +103,26 @@ return function (App\Support\Router $router): void {
     $router->get('/ai/settings', [AIController::class, 'settings'], $authTenantSub);
     $router->post('/ai/settings/save', [AIController::class, 'saveSettings'], $authTenantSub);
     $router->post('/ai/test-hybrid', [AIController::class, 'testHybrid'], $authTenantSub);
+
+
+    // Campanhas e remarketing
+    $router->get('/campaigns', [CampaignController::class, 'index'], $authTenantSub);
+    $router->post('/campaigns/create', [CampaignController::class, 'create'], $authTenantSub);
+    $router->post('/campaigns/pause', [CampaignController::class, 'pause'], $authTenantSub);
+    $router->post('/campaigns/resume', [CampaignController::class, 'resume'], $authTenantSub);
+    $router->post('/campaigns/cancel', [CampaignController::class, 'cancel'], $authTenantSub);
+    $router->post('/campaigns/run', [CampaignController::class, 'runBatch'], $authTenantSub);
+    $router->post('/campaigns/report', [CampaignController::class, 'report'], $authTenantSub);
+
+    // Bot venda de internet
+    $router->get('/internet', [InternetSalesController::class, 'index'], $authTenantSub);
+    $router->post('/internet/packages/create', [InternetSalesController::class, 'createPackage'], $authTenantSub);
+    $router->post('/internet/orders/create', [InternetSalesController::class, 'createOrder'], $authTenantSub);
+    $router->post('/internet/orders/status', [InternetSalesController::class, 'updateOrderStatus'], $authTenantSub);
+
+    // Notificações
+    $router->get('/notifications', [NotificationController::class, 'index'], $authTenantSub);
+    $router->post('/notifications/read', [NotificationController::class, 'markRead'], $authTenantSub);
 
     // Webhook inbound (provider -> plataforma)
     $router->post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'inbound']);

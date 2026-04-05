@@ -113,3 +113,23 @@ Esta fase adiciona providers IA desacoplados e decisão híbrida fluxo/regra/IA/
   - inbound WhatsApp processa automação e depois motor híbrido
   - logs de prompts/respostas em `ai_prompts`
   - tracking de consumo em `ai_usage_logs` com bloqueio por limite de plano
+
+
+## FASE 9 — Campanhas, Remarketing, Internet Bot e Notificações
+
+Esta fase adiciona marketing operacional e alertas internos:
+
+- Migration: `database/migrations/008_campaigns_internet_notifications.sql`
+- Módulos:
+  - `/campaigns` (campanhas/remarketing)
+  - `/internet` (bot de venda de internet)
+  - `/notifications` (alertas internos)
+- Serviços:
+  - `App\Services\CampaignService`
+  - `App\Services\InternetSalesBotService`
+  - `App\Services\NotificationService`
+- Recursos:
+  - segmentação por tags, estágio, clientes frios, perdidos e pós-venda
+  - lote controlado, pausa/retoma/cancelamento e relatório de campanha
+  - pacotes e pedidos de internet com tagging automático
+  - notificações para nova mensagem, novo lead, pagamento, trial, tarefa vencida, instância desconectada, campanha concluída e limite próximo

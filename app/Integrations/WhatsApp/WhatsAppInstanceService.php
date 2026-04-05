@@ -5,6 +5,7 @@ namespace App\Integrations\WhatsApp;
 
 use App\Repositories\WhatsAppInstanceEventRepository;
 use App\Repositories\WhatsAppInstanceRepository;
+use App\Services\NotificationService;
 
 final class WhatsAppInstanceService
 {
@@ -12,6 +13,7 @@ final class WhatsAppInstanceService
         private readonly ProviderManager $providers,
         private readonly WhatsAppInstanceRepository $instances,
         private readonly WhatsAppInstanceEventRepository $events,
+        private readonly NotificationService $notifications,
     ) {
     }
 
@@ -61,6 +63,7 @@ final class WhatsAppInstanceService
         $response = $provider->disconnect((string)$instance['provider_instance_id']);
         $this->instances->setStatus($id, 'disconnected', null, 'NOW()');
         $this->events->log($tenantId, $id, 'instance_disconnected', 'disconnected', $response, null);
+        $this->notifications->push($tenantId, 'instance_disconnected', 'Instância desconectada', 'A instância #' . $id . ' foi desconectada.');
     }
 
     public function reconnect(int $tenantId, int $id): void

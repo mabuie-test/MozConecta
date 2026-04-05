@@ -140,3 +140,14 @@ Tabelas adicionadas:
 - `assistant_profiles`: configuração do assistente por tenant (persona, idioma, tom, FAQ, políticas, objetivos, provider principal/fallback).
 - `ai_prompts`: log de prompts, respostas, provider/model e status.
 - `ai_usage_logs`: tracking de consumo de IA para controlo de limites e auditoria.
+
+
+## FASE 9 — Campanhas, Internet Bot e Notificações
+
+Tabelas adicionadas:
+- `campaigns`: configuração da campanha, segmentação, status, lote e métricas.
+- `campaign_contacts`: fila/rastreio de envio por contacto.
+- `internet_packages`: catálogo de pacotes de internet por tenant.
+- `internet_orders`: pedidos comerciais do bot de internet com status de acompanhamento.
+
+A tabela `notifications` (fase anterior) passa a ser usada ativamente para alertas operacionais internos.

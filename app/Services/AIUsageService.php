@@ -11,6 +11,7 @@ final class AIUsageService
     public function __construct(
         private readonly AIUsageLogRepository $usageLogs,
         private readonly SubscriptionRepository $subscriptions,
+        private readonly NotificationService $notifications,
     ) {
     }
 
@@ -46,5 +47,14 @@ final class AIUsageService
             'units_used' => $units,
             'metadata_json' => $metadata,
         ]);
+
+        $subscription = $this->subscriptions->latestByTenant($tenantId);
+        $limit = $subscription['ai_limit'] !== null ? (int)$subscription['ai_limit'] : null;
+        if ($limit !== null && $limit > 0) {
+            $used = $this->usageLogs->monthUnits($tenantId, 'message');
+            if ($used >= (int)ceil($limit * 0.8)) {
+                $this->notifications->push($tenantId, 'limit_near_end', 'Limite de IA perto do fim', 'Você usou ' . $used . ' de ' . $limit . ' mensagens IA no mês.');
+            }
+        }
     }
 }

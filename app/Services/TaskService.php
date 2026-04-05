@@ -11,12 +11,16 @@ final class TaskService
     public function __construct(
         private readonly TaskRepository $tasks,
         private readonly AuditLogRepository $auditLogs,
+        private readonly NotificationService $notifications,
     ) {
     }
 
     public function list(int $tenantId, string $bucket = 'all'): array
     {
-        $this->tasks->markOverdue($tenantId);
+        $overdue = $this->tasks->markOverdue($tenantId);
+        if ($overdue > 0) {
+            $this->notifications->push($tenantId, "task_overdue", "Tarefas vencidas", $overdue . " tarefa(s) marcadas como vencidas.");
+        }
         return $this->tasks->listByTenant($tenantId, $bucket);
     }
 

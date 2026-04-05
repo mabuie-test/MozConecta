@@ -1,4 +1,4 @@
--- Ordem de execução (FASE 2 + FASE 3 + FASE 4 + FASE 5 + FASE 6 + FASE 7 + FASE 8)
+-- Ordem de execução (FASE 2 + FASE 3 + FASE 4 + FASE 5 + FASE 6 + FASE 7 + FASE 8 + FASE 9)
 -- 1) database/migrations/001_core_multitenant.sql
 -- 2) database/migrations/002_auth_onboarding_security.sql
 -- 3) database/migrations/003_billing_debito.sql
@@ -6,7 +6,8 @@
 -- 5) database/migrations/005_inbox_crm_pipeline.sql
 -- 6) database/migrations/006_tasks_flows_automation.sql
 -- 7) database/migrations/007_ai_hybrid_engine.sql
--- 8) database/seeds/001_subscription_statuses.sql
--- 9) database/seeds/002_roles_permissions.sql
--- 10) database/seeds/003_plans.sql
--- 11) database/seeds/004_master_admin.sql
+-- 8) database/migrations/008_campaigns_internet_notifications.sql
+-- 9) database/seeds/001_subscription_statuses.sql
+-- 10) database/seeds/002_roles_permissions.sql
+-- 11) database/seeds/003_plans.sql
+-- 12) database/seeds/004_master_admin.sql

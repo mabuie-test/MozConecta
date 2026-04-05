@@ -9,6 +9,7 @@ use App\Repositories\ConversationRepository;
 use App\Repositories\WhatsAppInstanceEventRepository;
 use App\Services\AutomationEngineService;
 use App\Services\HybridDecisionService;
+use App\Services\NotificationService;
 
 final class MessageInboundProcessor
 {
@@ -19,6 +20,7 @@ final class MessageInboundProcessor
         private readonly ConversationMessageRepository $messages,
         private readonly AutomationEngineService $automation,
         private readonly HybridDecisionService $hybrid,
+        private readonly NotificationService $notifications,
     ) {
     }
 
@@ -29,6 +31,7 @@ final class MessageInboundProcessor
 
         if ($phone !== '' && $body !== '') {
             $contact = $this->contacts->findByPhone($tenantId, $phone);
+            $isNewLead = false;
             if (!$contact) {
                 $contactId = $this->contacts->create([
                     'tenant_id' => $tenantId,
@@ -46,6 +49,7 @@ final class MessageInboundProcessor
                     'last_interaction_at' => now(),
                 ]);
                 $contact = $this->contacts->findById($tenantId, $contactId);
+                $isNewLead = true;
             }
 
             if ($contact) {
@@ -66,6 +70,10 @@ final class MessageInboundProcessor
 
                 $flowResult = $this->automation->processInbound($tenantId, $conversationId, (int)$contact['id'], $body) ?? [];
                 $this->hybrid->handleInbound($tenantId, $conversationId, (int)$contact['id'], $body, $flowResult);
+                $this->notifications->push($tenantId, "new_message", "Nova mensagem", "Mensagem recebida de " . $phone . ".");
+                if ($isNewLead) {
+                    $this->notifications->push($tenantId, "new_lead", "Novo lead", "Novo lead criado automaticamente: " . $phone . ".");
+                }
             }
         }
 

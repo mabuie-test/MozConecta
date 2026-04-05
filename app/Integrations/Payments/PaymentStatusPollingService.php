@@ -7,6 +7,7 @@ use App\Repositories\AuditLogRepository;
 use App\Repositories\PaymentProviderLogRepository;
 use App\Repositories\PaymentRepository;
 use App\Repositories\SubscriptionRepository;
+use App\Services\NotificationService;
 
 final class PaymentStatusPollingService
 {
@@ -18,6 +19,7 @@ final class PaymentStatusPollingService
         private readonly SubscriptionService $subscriptions,
         private readonly SubscriptionRepository $subscriptionRepository,
         private readonly AuditLogRepository $audit,
+        private readonly NotificationService $notifications,
     ) {
     }
 
@@ -53,9 +55,11 @@ final class PaymentStatusPollingService
                 $invoiceId = (int)$payment['invoice_id'];
                 $this->subscriptions->activateFromPayment($tenantId, $invoiceId, (int)$payment['id']);
                 $this->audit->add($tenantId, null, 'billing.payment.confirmed', 'payments', (int)$payment['id'], ['status' => $status]);
+                $this->notifications->push($tenantId, 'payment_confirmed', 'Pagamento confirmado', 'Pagamento confirmado para invoice #' . $invoiceId . '.');
             } elseif (in_array($status, ['failed', 'cancelled', 'error'], true)) {
                 $this->subscriptions->failPayment((int)$payment['invoice_id'], (int)$payment['id'], $status);
                 $this->audit->add($tenantId, null, 'billing.payment.failed', 'payments', (int)$payment['id'], ['status' => $status]);
+                $this->notifications->push($tenantId, 'payment_failed', 'Pagamento falhou', 'Falha no pagamento da invoice #' . (int)$payment['invoice_id'] . '.');
             }
         }
     }

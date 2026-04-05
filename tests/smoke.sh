@@ -46,3 +46,18 @@ php -l app/Repositories/AIPromptRepository.php
 php -l app/Repositories/AIUsageLogRepository.php
 php -l app/Integrations/AI/OpenRouterProvider.php
 php -l app/Integrations/AI/GeminiProvider.php
+
+php -l app/Controllers/CampaignController.php
+php -l app/Controllers/InternetSalesController.php
+php -l app/Controllers/NotificationController.php
+php -l app/Services/CampaignService.php
+php -l app/Services/InternetSalesBotService.php
+php -l app/Services/NotificationService.php
+php -l app/Repositories/CampaignRepository.php
+php -l app/Repositories/CampaignContactRepository.php
+php -l app/Repositories/InternetPackageRepository.php
+php -l app/Repositories/InternetOrderRepository.php
+php -l app/Repositories/NotificationRepository.php
+php -l app/Views/campaigns/index.php
+php -l app/Views/internet/index.php
+php -l app/Views/notifications/index.php

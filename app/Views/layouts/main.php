@@ -20,6 +20,9 @@
         <a href="/tasks">Tarefas</a>
         <a href="/flows">Fluxos</a>
         <a href="/ai/settings">IA</a>
+        <a href="/campaigns">Campanhas</a>
+        <a href="/internet">Internet Bot</a>
+        <a href="/notifications">Notificações</a>
         <a href="/billing/plans">Planos</a>
         <a href="/billing/history">Financeiro</a>
         <a href="/profile">Perfil</a>
