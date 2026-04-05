@@ -8,6 +8,7 @@ use App\Repositories\ConversationMessageRepository;
 use App\Repositories\ConversationRepository;
 use App\Repositories\WhatsAppInstanceEventRepository;
 use App\Services\AutomationEngineService;
+use App\Services\HybridDecisionService;
 
 final class MessageInboundProcessor
 {
@@ -17,6 +18,7 @@ final class MessageInboundProcessor
         private readonly ConversationRepository $conversations,
         private readonly ConversationMessageRepository $messages,
         private readonly AutomationEngineService $automation,
+        private readonly HybridDecisionService $hybrid,
     ) {
     }
 
@@ -62,7 +64,8 @@ final class MessageInboundProcessor
                 $this->conversations->touchLastMessage($tenantId, $conversationId);
                 $this->contacts->touchInteraction($tenantId, (int)$contact['id']);
 
-                $this->automation->processInbound($tenantId, $conversationId, (int)$contact['id'], $body);
+                $flowResult = $this->automation->processInbound($tenantId, $conversationId, (int)$contact['id'], $body) ?? [];
+                $this->hybrid->handleInbound($tenantId, $conversationId, (int)$contact['id'], $body, $flowResult);
             }
         }
 

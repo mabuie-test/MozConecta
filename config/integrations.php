@@ -22,5 +22,16 @@ return [
     ],
     'ai' => [
         'default' => env('AI_DEFAULT_PROVIDER', 'openrouter'),
+        'timeout' => (int) env('AI_TIMEOUT', 25),
+        'openrouter' => [
+            'base_url' => env('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1'),
+            'api_key' => env('OPENROUTER_API_KEY', ''),
+            'model' => env('OPENROUTER_MODEL', 'openai/gpt-4o-mini'),
+        ],
+        'gemini' => [
+            'base_url' => env('GEMINI_BASE_URL', 'https://generativelanguage.googleapis.com/v1beta'),
+            'api_key' => env('GEMINI_API_KEY', ''),
+            'model' => env('GEMINI_MODEL', 'gemini-1.5-flash'),
+        ],
     ],
 ];

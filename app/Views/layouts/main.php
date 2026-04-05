@@ -19,6 +19,7 @@
         <a href="/crm/pipeline">Pipeline</a>
         <a href="/tasks">Tarefas</a>
         <a href="/flows">Fluxos</a>
+        <a href="/ai/settings">IA</a>
         <a href="/billing/plans">Planos</a>
         <a href="/billing/history">Financeiro</a>
         <a href="/profile">Perfil</a>

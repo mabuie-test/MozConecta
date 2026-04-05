@@ -33,3 +33,16 @@ php -l app/Repositories/ChatbotFlowRepository.php
 php -l app/Repositories/ChatbotNodeRepository.php
 php -l app/Repositories/ChatbotEdgeRepository.php
 php -l app/Repositories/ChatbotExecutionLogRepository.php
+
+php -l app/Controllers/AIController.php
+php -l app/Services/HybridDecisionService.php
+php -l app/Services/PromptBuilderService.php
+php -l app/Services/IntentClassifierService.php
+php -l app/Services/ConversationMemoryService.php
+php -l app/Services/AIUsageService.php
+php -l app/Services/FallbackBotService.php
+php -l app/Repositories/AssistantProfileRepository.php
+php -l app/Repositories/AIPromptRepository.php
+php -l app/Repositories/AIUsageLogRepository.php
+php -l app/Integrations/AI/OpenRouterProvider.php
+php -l app/Integrations/AI/GeminiProvider.php

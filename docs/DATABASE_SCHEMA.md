@@ -132,3 +132,11 @@ Tabelas adicionadas:
 - `chatbot_nodes`: nós configuráveis do construtor.
 - `chatbot_edges`: ligações condicionais entre nós.
 - `chatbot_execution_logs`: rastreio técnico da execução do motor.
+
+
+## FASE 8 — IA por API e Motor Híbrido
+
+Tabelas adicionadas:
+- `assistant_profiles`: configuração do assistente por tenant (persona, idioma, tom, FAQ, políticas, objetivos, provider principal/fallback).
+- `ai_prompts`: log de prompts, respostas, provider/model e status.
+- `ai_usage_logs`: tracking de consumo de IA para controlo de limites e auditoria.

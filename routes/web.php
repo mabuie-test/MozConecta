@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use App\Controllers\AdminController;
+use App\Controllers\AIController;
 use App\Controllers\AuthController;
 use App\Controllers\BillingController;
 use App\Controllers\DashboardController;
@@ -93,6 +94,12 @@ return function (App\Support\Router $router): void {
     $router->post('/flows/edges/add', [FlowController::class, 'addEdge'], $authTenantSub);
     $router->post('/flows/toggle', [FlowController::class, 'toggle'], $authTenantSub);
     $router->post('/flows/run-schedules', [FlowController::class, 'runSchedules'], $authTenantSub);
+
+
+    // IA por tenant
+    $router->get('/ai/settings', [AIController::class, 'settings'], $authTenantSub);
+    $router->post('/ai/settings/save', [AIController::class, 'saveSettings'], $authTenantSub);
+    $router->post('/ai/test-hybrid', [AIController::class, 'testHybrid'], $authTenantSub);
 
     // Webhook inbound (provider -> plataforma)
     $router->post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'inbound']);

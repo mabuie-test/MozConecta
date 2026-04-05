@@ -94,3 +94,22 @@ Esta fase adiciona gestão de tarefas e construtor de fluxos com execução rast
   - nós e arestas de fluxo com regras por keyword/tempo/tag/fallback
   - logs de execução em `chatbot_execution_logs`
   - agendamentos em `schedules` para wait_reply/remarketing/resume
+
+
+## FASE 8 — IA por API e Motor Híbrido
+
+Esta fase adiciona providers IA desacoplados e decisão híbrida fluxo/regra/IA/humano:
+
+- Migration: `database/migrations/007_ai_hybrid_engine.sql`
+- Módulo de configuração IA por tenant: `/ai/settings`
+- Serviços:
+  - `App\Services\PromptBuilderService`
+  - `App\Services\IntentClassifierService`
+  - `App\Services\ConversationMemoryService`
+  - `App\Services\AIUsageService`
+  - `App\Services\FallbackBotService`
+  - `App\Services\HybridDecisionService`
+- Integração com inbox/fluxos:
+  - inbound WhatsApp processa automação e depois motor híbrido
+  - logs de prompts/respostas em `ai_prompts`
+  - tracking de consumo em `ai_usage_logs` com bloqueio por limite de plano

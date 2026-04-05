@@ -16,7 +16,7 @@ final class SubscriptionRepository extends BaseRepository
 
     public function latestByTenant(int $tenantId): ?array
     {
-        return $this->fetchOne('SELECT s.*, ss.code AS status_code, p.name AS plan_name FROM subscriptions s JOIN subscription_statuses ss ON ss.id=s.status_id JOIN plans p ON p.id=s.plan_id WHERE s.tenant_id=:tenant_id AND s.deleted_at IS NULL ORDER BY s.id DESC LIMIT 1', ['tenant_id' => $tenantId]);
+        return $this->fetchOne('SELECT s.*, ss.code AS status_code, p.name AS plan_name, p.ai_limit, p.message_limit, p.instance_limit, p.user_limit, p.feature_flags_json FROM subscriptions s JOIN subscription_statuses ss ON ss.id=s.status_id JOIN plans p ON p.id=s.plan_id WHERE s.tenant_id=:tenant_id AND s.deleted_at IS NULL ORDER BY s.id DESC LIMIT 1', ['tenant_id' => $tenantId]);
     }
 
     public function setStatus(int $subscriptionId, int $statusId): void
