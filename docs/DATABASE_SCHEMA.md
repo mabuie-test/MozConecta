@@ -80,3 +80,17 @@
 - Quase todas as consultas operacionais usam `tenant_id` + estado/tempo.
 - Todas as entidades tenant-aware possuem FK para `tenants`.
 - Repositórios devem obrigatoriamente filtrar por `tenant_id` nas fases seguintes.
+
+## Extensões FASE 3 (Auth/Security)
+
+### password_resets
+- Token com hash + expiração + `used_at`.
+- Permite recuperação segura de senha.
+
+### login_logs
+- Histórico de tentativas de login (sucesso/falha), IP e user-agent.
+- Base para auditoria e anti-abuso.
+
+### verification_tokens
+- Estrutura de verificação por email/OTP.
+- Preparado para integração de providers externos de envio.

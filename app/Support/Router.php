@@ -28,9 +28,16 @@ final class Router
             return;
         }
 
-        foreach ($route['middleware'] as $middlewareClass) {
+        foreach ($route['middleware'] as $entry) {
+            $params = [];
+            $middlewareClass = $entry;
+            if (is_string($entry) && str_contains($entry, ':')) {
+                [$middlewareClass, $rawParams] = explode(':', $entry, 2);
+                $params = array_filter(array_map('trim', explode(',', $rawParams)));
+            }
+
             $middleware = $container->get($middlewareClass);
-            if (method_exists($middleware, 'handle') && $middleware->handle($request) === false) {
+            if (method_exists($middleware, 'handle') && $middleware->handle($request, $params) === false) {
                 return;
             }
         }

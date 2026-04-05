@@ -9,7 +9,17 @@
 <body>
   <nav class="topbar">
     <div class="brand">MozConecta</div>
-    <div class="links"><a href="/">Home</a><a href="/login">Login</a><a href="/dashboard">Painel</a></div>
+    <div class="links">
+      <a href="/">Home</a>
+      <?php if (!empty($_SESSION['user_id'])): ?>
+        <a href="/dashboard">Painel</a>
+        <a href="/profile">Perfil</a>
+        <form method="post" action="/logout" class="inline-form"><button type="submit">Sair</button></form>
+      <?php else: ?>
+        <a href="/login">Login</a>
+        <a href="/register">Registo</a>
+      <?php endif; ?>
+    </div>
   </nav>
   <main class="container"><?= $content ?? '' ?></main>
 </body>

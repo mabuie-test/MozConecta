@@ -8,7 +8,7 @@ use App\Support\Response;
 
 final class TenantMiddleware
 {
-    public function handle(Request $request): bool
+    public function handle(Request $request, array $params = []): bool
     {
         if (!isset($_SESSION['tenant_id'])) {
             Response::json(['error' => 'tenant_context_required'], 403);

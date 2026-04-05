@@ -10,11 +10,11 @@ final class SubscriptionMiddleware
 {
     private const ALLOWED = ['active', 'trial_active'];
 
-    public function handle(Request $request): bool
+    public function handle(Request $request, array $params = []): bool
     {
         $status = $_SESSION['subscription_status'] ?? null;
         if (!in_array($status, self::ALLOWED, true)) {
-            Response::json(['error' => 'subscription_required'], 402);
+            Response::redirect('/billing-required');
             return false;
         }
         return true;

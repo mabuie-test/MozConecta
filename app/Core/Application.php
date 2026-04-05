@@ -21,12 +21,13 @@ final class Application
     public function __construct(private readonly string $basePath)
     {
         date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
-        session_start();
 
         $this->container = new Container();
         $this->config = new Config($basePath . '/config');
         $this->config->load();
         $this->router = new Router();
+
+        $this->bootSecureSession();
 
         $logger = new Logger($basePath . '/storage/logs/app.log');
         (new ErrorHandler(new ExceptionHandler($logger), $this->config))->register();
@@ -42,5 +43,22 @@ final class Application
     {
         (require $this->basePath . '/routes/web.php')($this->router);
         $this->router->dispatch(new Request(), $this->container);
+    }
+
+    private function bootSecureSession(): void
+    {
+        $sessionConfig = $this->config->get('session', []);
+        session_name('MOZSESSID');
+        session_set_cookie_params([
+            'lifetime' => ((int)($sessionConfig['lifetime'] ?? 120)) * 60,
+            'path' => '/',
+            'domain' => '',
+            'secure' => (bool)($sessionConfig['secure'] ?? false),
+            'httponly' => true,
+            'samesite' => (string)($sessionConfig['same_site'] ?? 'Lax'),
+        ]);
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
     }
 }

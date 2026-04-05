@@ -8,7 +8,7 @@ use App\Support\Response;
 
 final class AuthMiddleware
 {
-    public function handle(Request $request): bool
+    public function handle(Request $request, array $params = []): bool
     {
         if (!isset($_SESSION['user_id'])) {
             Response::redirect('/login');

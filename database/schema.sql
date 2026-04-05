@@ -1,6 +1,7 @@
--- Ordem de execução (FASE 2)
+-- Ordem de execução (FASE 2 + FASE 3)
 -- 1) database/migrations/001_core_multitenant.sql
--- 2) database/seeds/001_subscription_statuses.sql
--- 3) database/seeds/002_roles_permissions.sql
--- 4) database/seeds/003_plans.sql
--- 5) database/seeds/004_master_admin.sql
+-- 2) database/migrations/002_auth_onboarding_security.sql
+-- 3) database/seeds/001_subscription_statuses.sql
+-- 4) database/seeds/002_roles_permissions.sql
+-- 5) database/seeds/003_plans.sql
+-- 6) database/seeds/004_master_admin.sql

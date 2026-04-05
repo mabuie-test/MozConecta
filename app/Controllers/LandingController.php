@@ -12,4 +12,9 @@ final class LandingController extends BaseController
     {
         $this->view('landing/index', ['title' => 'MozConecta SaaS']);
     }
+
+    public function billingRequired(Request $request): void
+    {
+        $this->view('errors/billing-required', ['title' => 'Assinatura necessária']);
+    }
 }

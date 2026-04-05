@@ -1,42 +1,53 @@
-# MozConecta SaaS — FASE 2 (Schema e Multi-tenant)
+# MozConecta SaaS — FASE 3 (Autenticação, Onboarding e Trial 24h)
 
-Esta fase entrega a base de dados relacional completa para autenticação, subscrição, billing e operação multiempresa.
+Esta fase implementa autenticação completa, gestão de sessão, controlo de acesso por perfil e onboarding automático com trial.
 
-## Entregas principais
-- Migrations SQL com FKs, índices, constraints e soft deletes.
-- Estrutura multi-tenant com isolamento lógico por `tenant_id`.
-- Seeders para planos, admin master, papéis/permissões, configurações default e status de assinatura.
-- Modelos e repositórios iniciais para entidades nucleares (`Tenant`, `User`, `Plan`, `Subscription`).
-- Documentação relacional de tabelas/colunas.
+## Funcionalidades entregues
+- Registo, login, logout.
+- Recuperação e redefinição de senha.
+- Alteração de senha no perfil.
+- Gestão de perfil do utilizador.
+- Logs de login e bloqueio por tentativas abusivas.
+- Sessões seguras (`HttpOnly`, `SameSite`, `session_regenerate_id`).
+- Fluxo de onboarding:
+  - cria tenant
+  - cria owner
+  - associa tenant-user
+  - cria subscrição trial de 24h (`trial_active`)
+  - marca `trial_consumed`.
+- Anti-abuso:
+  - 1 trial por email
+  - 1 trial por número
+  - arquitetura preparada para validação por IP/device.
+- Middleware de autenticação, perfil, tenant e assinatura/trial.
 
-## Migrações incluídas
-- `database/migrations/001_core_multitenant.sql`
+## Novas tabelas (fase 3)
+- `password_resets`
+- `login_logs`
+- `verification_tokens` (arquitetura preparada para email/OTP)
 
-## Seeders incluídos
-1. `database/seeds/001_subscription_statuses.sql`
-2. `database/seeds/002_roles_permissions.sql`
-3. `database/seeds/003_plans.sql`
-4. `database/seeds/004_master_admin.sql`
+## Rotas principais
+- `GET/POST /register`
+- `GET/POST /login`
+- `POST /logout`
+- `GET/POST /forgot-password`
+- `GET/POST /reset-password`
+- `GET/POST /profile`
+- `POST /profile/change-password`
+- `GET /dashboard`
 
-## Ordem de execução
+## Ordem de execução da base
 ```bash
 mysql -u root -p mozconecta < database/migrations/001_core_multitenant.sql
+mysql -u root -p mozconecta < database/migrations/002_auth_onboarding_security.sql
 mysql -u root -p mozconecta < database/seeds/001_subscription_statuses.sql
 mysql -u root -p mozconecta < database/seeds/002_roles_permissions.sql
 mysql -u root -p mozconecta < database/seeds/003_plans.sql
 mysql -u root -p mozconecta < database/seeds/004_master_admin.sql
 ```
 
-## Perfis suportados
-- owner
-- admin
-- manager
-- agent
-- support
-
-## Admin master inicial
-- Email: `master@mozconecta.local`
-- Password hash já incluído no seeder (alterar no primeiro acesso).
-
-## Documentação detalhada
-- `docs/DATABASE_SCHEMA.md`
+## Execução
+```bash
+composer install
+php -S localhost:8080 -t public
+```
