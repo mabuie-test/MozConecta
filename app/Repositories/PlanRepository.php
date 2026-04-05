@@ -5,15 +5,14 @@ namespace App\Repositories;
 
 final class PlanRepository extends BaseRepository
 {
-    public function findBySlug(string $slug): ?array
+    public function listActive(): array
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM plans WHERE slug = :slug LIMIT 1');
-        $stmt->execute(['slug' => $slug]);
-        return $stmt->fetch() ?: null;
+        $stmt = $this->pdo->query("SELECT * FROM plans WHERE status='active' AND deleted_at IS NULL ORDER BY display_order ASC");
+        return $stmt->fetchAll();
     }
 
-    public function allActive(): array
+    public function findBySlug(string $slug): ?array
     {
-        return $this->pdo->query("SELECT * FROM plans WHERE status='active' ORDER BY display_order")->fetchAll();
+        return $this->fetchOne('SELECT * FROM plans WHERE slug = :slug AND deleted_at IS NULL LIMIT 1', ['slug' => $slug]);
     }
 }

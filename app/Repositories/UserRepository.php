@@ -7,15 +7,13 @@ final class UserRepository extends BaseRepository
 {
     public function findByEmail(string $email): ?array
     {
-        $stmt = $this->pdo->prepare('SELECT u.*, tu.tenant_id, tu.role FROM users u JOIN tenant_users tu ON tu.user_id = u.id WHERE u.email = :email LIMIT 1');
-        $stmt->execute(['email' => $email]);
-        return $stmt->fetch() ?: null;
+        return $this->fetchOne('SELECT * FROM users WHERE email = :email AND deleted_at IS NULL LIMIT 1', ['email' => $email]);
     }
 
-    public function create(string $name, string $email, string $passwordHash): int
+    public function getTenantMemberships(int $userId): array
     {
-        $stmt = $this->pdo->prepare('INSERT INTO users (name,email,password_hash,status,created_at,updated_at) VALUES (:name,:email,:pass,:status,NOW(),NOW())');
-        $stmt->execute(['name' => $name, 'email' => $email, 'pass' => $passwordHash, 'status' => 'active']);
-        return (int)$this->pdo->lastInsertId();
+        $stmt = $this->pdo->prepare('SELECT tu.*, r.code as role_code, r.name as role_name FROM tenant_users tu JOIN roles r ON r.id=tu.role_id WHERE tu.user_id=:user_id AND tu.deleted_at IS NULL');
+        $stmt->execute(['user_id' => $userId]);
+        return $stmt->fetchAll();
     }
 }

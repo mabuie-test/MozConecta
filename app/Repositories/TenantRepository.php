@@ -5,16 +5,15 @@ namespace App\Repositories;
 
 final class TenantRepository extends BaseRepository
 {
-    public function create(string $name, string $slug): int
+    public function findBySlug(string $slug): ?array
     {
-        $stmt = $this->pdo->prepare('INSERT INTO tenants (name,slug,status,trial_consumed,created_at,updated_at) VALUES (:name,:slug,:status,0,NOW(),NOW())');
-        $stmt->execute(['name' => $name, 'slug' => $slug, 'status' => 'active']);
-        return (int)$this->pdo->lastInsertId();
+        return $this->fetchOne('SELECT * FROM tenants WHERE slug = :slug AND deleted_at IS NULL LIMIT 1', ['slug' => $slug]);
     }
 
-    public function attachUser(int $tenantId, int $userId, string $role): void
+    public function forUser(int $userId): array
     {
-        $stmt = $this->pdo->prepare('INSERT INTO tenant_users (tenant_id,user_id,role,created_at) VALUES (:tenant,:user,:role,NOW())');
-        $stmt->execute(['tenant' => $tenantId, 'user' => $userId, 'role' => $role]);
+        $stmt = $this->pdo->prepare('SELECT t.*, tu.role_id, tu.status AS membership_status FROM tenant_users tu JOIN tenants t ON t.id=tu.tenant_id WHERE tu.user_id=:user_id AND tu.deleted_at IS NULL AND t.deleted_at IS NULL');
+        $stmt->execute(['user_id' => $userId]);
+        return $stmt->fetchAll();
     }
 }

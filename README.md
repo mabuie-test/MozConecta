@@ -1,45 +1,42 @@
-# MozConecta SaaS — FASE 1 (Fundação Arquitetural)
+# MozConecta SaaS — FASE 2 (Schema e Multi-tenant)
 
-Base arquitetural completa em **PHP 8.2+** com **MySQL/MariaDB**, preparada para evolução de produto SaaS multi-tenant.
+Esta fase entrega a base de dados relacional completa para autenticação, subscrição, billing e operação multiempresa.
 
-## Stack
-- PHP 8.2+
-- PDO (MySQL/MariaDB)
-- MVC clássico
-- Frontend HTML/CSS/JS
-- Composer autoload PSR-4
+## Entregas principais
+- Migrations SQL com FKs, índices, constraints e soft deletes.
+- Estrutura multi-tenant com isolamento lógico por `tenant_id`.
+- Seeders para planos, admin master, papéis/permissões, configurações default e status de assinatura.
+- Modelos e repositórios iniciais para entidades nucleares (`Tenant`, `User`, `Plan`, `Subscription`).
+- Documentação relacional de tabelas/colunas.
 
-## Entregas da Fase 1
-- Estrutura de diretórios profissional (`app`, `bootstrap`, `config`, `routes`, `database`, `public`, `storage`, `tests`).
-- `composer.json` com autoload `App\\`.
-- Bootstrap central (`bootstrap/app.php`) + front controller (`public/index.php`).
-- Configuração por `.env` e arquivos de config centralizada.
-- Router com suporte a `GET/POST/PUT/PATCH/DELETE`.
-- Dispatcher de controllers + middleware pipeline.
-- Classes base: `BaseController`, `BaseModel`, `BaseRepository`, `BaseService`, `Request`, `Response`.
-- Middlewares iniciais: `AuthMiddleware`, `TenantMiddleware`, `SubscriptionMiddleware`, `AdminMiddleware`.
-- Tratamento global de erros e exceções + logger técnico em `storage/logs/app.log`.
-- Layout base da landing e painel.
-- Estrutura inicial para jobs e integrações (`WhatsApp`, `AI`, `Payments`, `Media`).
+## Migrações incluídas
+- `database/migrations/001_core_multitenant.sql`
 
-## Instalação
-1. Copie `.env.example` para `.env`.
-2. Configure credenciais de base de dados.
-3. Instale autoload:
-   ```bash
-   composer install
-   ```
-4. Execute localmente:
-   ```bash
-   php -S localhost:8080 -t public
-   ```
+## Seeders incluídos
+1. `database/seeds/001_subscription_statuses.sql`
+2. `database/seeds/002_roles_permissions.sql`
+3. `database/seeds/003_plans.sql`
+4. `database/seeds/004_master_admin.sql`
 
-> Para shared hosting: defina **document root** para `public/`.
-
-## Testes rápidos
+## Ordem de execução
 ```bash
-bash tests/smoke.sh
+mysql -u root -p mozconecta < database/migrations/001_core_multitenant.sql
+mysql -u root -p mozconecta < database/seeds/001_subscription_statuses.sql
+mysql -u root -p mozconecta < database/seeds/002_roles_permissions.sql
+mysql -u root -p mozconecta < database/seeds/003_plans.sql
+mysql -u root -p mozconecta < database/seeds/004_master_admin.sql
 ```
 
-## Próxima fase
-Implementação dos módulos de negócio (autenticação completa, assinatura, billing, WhatsApp, inbox, CRM, funil, IA, campanhas e admin operacional).
+## Perfis suportados
+- owner
+- admin
+- manager
+- agent
+- support
+
+## Admin master inicial
+- Email: `master@mozconecta.local`
+- Password hash já incluído no seeder (alterar no primeiro acesso).
+
+## Documentação detalhada
+- `docs/DATABASE_SCHEMA.md`
