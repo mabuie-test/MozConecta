@@ -8,6 +8,8 @@ use App\Controllers\DashboardController;
 use App\Controllers\LandingController;
 use App\Controllers\InboxController;
 use App\Controllers\CRMController;
+use App\Controllers\FlowController;
+use App\Controllers\TaskController;
 use App\Controllers\ProfileController;
 use App\Controllers\WhatsAppInstanceController;
 use App\Controllers\WhatsAppWebhookController;
@@ -75,6 +77,22 @@ return function (App\Support\Router $router): void {
     $router->post('/crm/contacts/update', [CRMController::class, 'update'], $authTenantSub);
     $router->get('/crm/pipeline', [CRMController::class, 'pipeline'], $authTenantSub);
     $router->post('/crm/pipeline/move', [CRMController::class, 'moveStage'], $authTenantSub);
+
+
+    // Tarefas e follow-up
+    $router->get('/tasks', [TaskController::class, 'index'], $authTenantSub);
+    $router->post('/tasks/create', [TaskController::class, 'create'], $authTenantSub);
+    $router->post('/tasks/update', [TaskController::class, 'update'], $authTenantSub);
+    $router->post('/tasks/status', [TaskController::class, 'changeStatus'], $authTenantSub);
+
+    // Fluxos e automações
+    $router->get('/flows', [FlowController::class, 'index'], $authTenantSub);
+    $router->post('/flows/create', [FlowController::class, 'createFlow'], $authTenantSub);
+    $router->get('/flows/show', [FlowController::class, 'show'], $authTenantSub);
+    $router->post('/flows/nodes/add', [FlowController::class, 'addNode'], $authTenantSub);
+    $router->post('/flows/edges/add', [FlowController::class, 'addEdge'], $authTenantSub);
+    $router->post('/flows/toggle', [FlowController::class, 'toggle'], $authTenantSub);
+    $router->post('/flows/run-schedules', [FlowController::class, 'runSchedules'], $authTenantSub);
 
     // Webhook inbound (provider -> plataforma)
     $router->post('/webhooks/whatsapp', [WhatsAppWebhookController::class, 'inbound']);

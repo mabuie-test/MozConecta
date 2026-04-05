@@ -75,3 +75,22 @@ Esta fase adiciona `inbox` multiatendente e CRM nativo com pipeline visual:
   - atribuição, takeover e mudança de estado de conversa
   - lead score básico por engajamento/valor/prioridade
   - movimentação de lead entre estágios com auditoria
+
+
+## FASE 7 — Tarefas, Follow-up e Fluxos Automáticos
+
+Esta fase adiciona gestão de tarefas e construtor de fluxos com execução rastreável:
+
+- Migration: `database/migrations/006_tasks_flows_automation.sql`
+- Módulo de tarefas: `/tasks`
+- Módulo de fluxos: `/flows` e `/flows/show`
+- Serviços:
+  - `App\Services\TaskService`
+  - `App\Services\FlowBuilderService`
+  - `App\Services\AutomationEngineService`
+- Recursos:
+  - estados de tarefa (`pending`, `in_progress`, `done`, `cancelled`, `overdue`)
+  - criação de follow-up e marcação automática de vencidas
+  - nós e arestas de fluxo com regras por keyword/tempo/tag/fallback
+  - logs de execução em `chatbot_execution_logs`
+  - agendamentos em `schedules` para wait_reply/remarketing/resume

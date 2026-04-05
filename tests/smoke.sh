@@ -21,3 +21,15 @@ php -l app/Repositories/ConversationRepository.php
 php -l app/Repositories/ConversationMessageRepository.php
 php -l app/Repositories/ContactRepository.php
 php -l app/Repositories/FunnelRepository.php
+
+php -l app/Controllers/TaskController.php
+php -l app/Controllers/FlowController.php
+php -l app/Services/TaskService.php
+php -l app/Services/FlowBuilderService.php
+php -l app/Services/AutomationEngineService.php
+php -l app/Repositories/TaskRepository.php
+php -l app/Repositories/ScheduleRepository.php
+php -l app/Repositories/ChatbotFlowRepository.php
+php -l app/Repositories/ChatbotNodeRepository.php
+php -l app/Repositories/ChatbotEdgeRepository.php
+php -l app/Repositories/ChatbotExecutionLogRepository.php

@@ -121,3 +121,14 @@ Tabelas adicionadas:
 - `lead_scores`: score agregado básico por contacto.
 
 Índices operacionais cobrem: busca por tenant/status, timeline por conversa, score por tenant e filtros de CRM.
+
+
+## FASE 7 — Tarefas, Schedules e Fluxos
+
+Tabelas adicionadas:
+- `tasks`: gestão de tarefas/follow-up com estados operacionais e vencimento.
+- `schedules`: agendamento de eventos (follow-up, remarketing, resume de fluxo).
+- `chatbot_flows`: definição do fluxo, trigger, fallback e flags de reentrada/remarketing.
+- `chatbot_nodes`: nós configuráveis do construtor.
+- `chatbot_edges`: ligações condicionais entre nós.
+- `chatbot_execution_logs`: rastreio técnico da execução do motor.
