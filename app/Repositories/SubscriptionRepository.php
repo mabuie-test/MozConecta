@@ -19,6 +19,14 @@ final class SubscriptionRepository extends BaseRepository
         return $this->fetchOne('SELECT s.*, ss.code AS status_code, p.name AS plan_name FROM subscriptions s JOIN subscription_statuses ss ON ss.id=s.status_id JOIN plans p ON p.id=s.plan_id WHERE s.tenant_id=:tenant_id AND s.deleted_at IS NULL ORDER BY s.id DESC LIMIT 1', ['tenant_id' => $tenantId]);
     }
 
+    public function setStatus(int $subscriptionId, int $statusId): void
+    {
+        $this->execute('UPDATE subscriptions SET status_id=:status_id, current_period_starts_at=NOW(), current_period_ends_at=DATE_ADD(NOW(), INTERVAL 30 DAY), updated_at=NOW() WHERE id=:id', [
+            'status_id' => $statusId,
+            'id' => $subscriptionId,
+        ]);
+    }
+
     public function listInvoicesByTenant(int $tenantId): array
     {
         $stmt = $this->pdo->prepare('SELECT * FROM invoices WHERE tenant_id=:tenant_id AND deleted_at IS NULL ORDER BY id DESC');

@@ -13,6 +13,8 @@
       <a href="/">Home</a>
       <?php if (!empty($_SESSION['user_id'])): ?>
         <a href="/dashboard">Painel</a>
+        <a href="/billing/plans">Planos</a>
+        <a href="/billing/history">Financeiro</a>
         <a href="/profile">Perfil</a>
         <form method="post" action="/logout" class="inline-form"><button type="submit">Sair</button></form>
       <?php else: ?>

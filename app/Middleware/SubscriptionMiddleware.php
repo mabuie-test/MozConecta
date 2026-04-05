@@ -14,7 +14,7 @@ final class SubscriptionMiddleware
     {
         $status = $_SESSION['subscription_status'] ?? null;
         if (!in_array($status, self::ALLOWED, true)) {
-            Response::redirect('/billing-required');
+            Response::redirect('/billing/plans');
             return false;
         }
         return true;

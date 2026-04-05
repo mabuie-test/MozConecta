@@ -1,25 +1,25 @@
-# Arquitetura — FASE 3
+# Arquitetura — FASE 4
 
-## Camadas
-- Controllers: fluxo HTTP (auth, perfil, dashboard).
-- Services: regras de onboarding, login seguro, trial e password reset.
-- Repositories: acesso a dados com PDO e prepared statements.
-- Middleware: auth, tenant, perfil e assinatura/trial.
+## Billing desacoplado
+A integração de pagamentos está em `app/Integrations/Payments` com providers separados por método de cobrança:
+- `DebitoMpesaProvider`
+- `DebitoEmolaProvider`
 
-## Fluxo de onboarding
-1. Utilizador submete registo.
-2. `AuthService` valida anti-abuso (email/telefone).
-3. Cria `users` + `tenants` + `tenant_users` (owner).
-4. Cria `subscriptions` com `trial_active`, início/fim de 24h.
-5. Sessão autenticada é iniciada.
+`PaymentService` coordena checkout, persistência e logs.
 
-## Segurança de autenticação
-- Hash de senhas com `password_hash`.
-- Registo de tentativas em `login_logs`.
-- Bloqueio temporário após falhas consecutivas.
-- Password reset com token hash + expiração.
-- Sessão com cookie seguro e regeneração de ID.
+## Serviços de pagamento
+- `BillingService`: planos, invoice e histórico financeiro.
+- `PaymentService`: inicia cobrança e grava referências do gateway.
+- `PaymentStatusPollingService`: consulta estado e actualiza subscrição.
+- `SubscriptionService`: activa/falha assinatura conforme pagamento.
+- `WebhookPaymentService`: preparado para callbacks.
 
-## Preparação para verificação email/OTP
-- tabela `verification_tokens` criada.
-- arquitetura pronta para provider de envio externo.
+## Persistência e auditoria
+- `invoices`, `payments`, `payment_transactions` com campos de provider.
+- `payment_provider_logs` para logs técnicos de request/response.
+- `audit_logs` para rastreabilidade de eventos de cobrança.
+
+## Segurança operacional
+- autenticação Débito com token cacheado e renovação automática.
+- timeout configurável por env.
+- payloads e respostas guardadas para troubleshooting.

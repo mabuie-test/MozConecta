@@ -5,7 +5,7 @@ namespace App\Integrations\Payments;
 
 interface PaymentProviderInterface
 {
+    public function providerName(): string;
     public function createCharge(array $payload): array;
-    public function verifyTransaction(string $transactionId): array;
-    public function validateWebhook(array $payload, string $signature): bool;
+    public function checkStatus(string $debitoReference): array;
 }

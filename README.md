@@ -1,53 +1,55 @@
-# MozConecta SaaS — FASE 3 (Autenticação, Onboarding e Trial 24h)
+# MozConecta SaaS — FASE 4 (Billing + Débito API)
 
-Esta fase implementa autenticação completa, gestão de sessão, controlo de acesso por perfil e onboarding automático com trial.
+FASE 4 implementa módulo completo de billing com checkout de planos, cobrança C2B (M-Pesa/eMola) via API Débito, consulta de status e activação de assinatura.
 
-## Funcionalidades entregues
-- Registo, login, logout.
-- Recuperação e redefinição de senha.
-- Alteração de senha no perfil.
-- Gestão de perfil do utilizador.
-- Logs de login e bloqueio por tentativas abusivas.
-- Sessões seguras (`HttpOnly`, `SameSite`, `session_regenerate_id`).
-- Fluxo de onboarding:
-  - cria tenant
-  - cria owner
-  - associa tenant-user
-  - cria subscrição trial de 24h (`trial_active`)
-  - marca `trial_consumed`.
-- Anti-abuso:
-  - 1 trial por email
-  - 1 trial por número
-  - arquitetura preparada para validação por IP/device.
-- Middleware de autenticação, perfil, tenant e assinatura/trial.
+## O que foi implementado
+- Planos e checkout com criação de invoice.
+- Pagamentos via Débito:
+  - M-Pesa: `POST /api/v1/wallets/{wallet_id}/c2b/mpesa`
+  - eMola: `POST /api/v1/wallets/{wallet_id}/c2b/emola`
+- Autenticação Débito via `POST /api/v1/login` com cache de token.
+- Consulta de status via `GET /api/v1/transactions/{debito_reference}/status`.
+- Polling de pagamentos pendentes e activação automática de assinatura quando sucesso.
+- Histórico financeiro, assinatura atual e páginas de billing.
+- Logs técnicos de provider e auditoria de eventos de pagamento.
 
-## Novas tabelas (fase 3)
-- `password_resets`
-- `login_logs`
-- `verification_tokens` (arquitetura preparada para email/OTP)
+## Variáveis de ambiente Débito
+```env
+DEBITO_BASE_URL=
+DEBITO_EMAIL=
+DEBITO_PASSWORD=
+DEBITO_WALLET_ID=
+DEBITO_TIMEOUT=20
+DEBITO_STATUS_POLLING_ENABLED=true
+DEBITO_STATUS_POLLING_INTERVAL=60
+```
 
-## Rotas principais
-- `GET/POST /register`
-- `GET/POST /login`
-- `POST /logout`
-- `GET/POST /forgot-password`
-- `GET/POST /reset-password`
-- `GET/POST /profile`
-- `POST /profile/change-password`
-- `GET /dashboard`
+## Rotas de billing
+- `GET /billing/plans`
+- `GET /billing/checkout?plan={slug}`
+- `POST /billing/checkout`
+- `GET /billing/payment-status?payment_id={id}`
+- `GET /billing/history`
+- `GET /billing/subscription`
+- `POST /billing/change-plan`
 
-## Ordem de execução da base
+## Migrações
 ```bash
 mysql -u root -p mozconecta < database/migrations/001_core_multitenant.sql
 mysql -u root -p mozconecta < database/migrations/002_auth_onboarding_security.sql
+mysql -u root -p mozconecta < database/migrations/003_billing_debito.sql
+```
+
+## Seeders
+```bash
 mysql -u root -p mozconecta < database/seeds/001_subscription_statuses.sql
 mysql -u root -p mozconecta < database/seeds/002_roles_permissions.sql
 mysql -u root -p mozconecta < database/seeds/003_plans.sql
 mysql -u root -p mozconecta < database/seeds/004_master_admin.sql
 ```
 
-## Execução
-```bash
-composer install
-php -S localhost:8080 -t public
-```
+## Nota de produção
+As classes Débito usam chamadas HTTP reais via cURL. Para produção:
+- configurar credenciais reais;
+- habilitar TLS válido no servidor;
+- ligar polling em cron/worker.

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;
+use App\Controllers\BillingController;
 use App\Controllers\DashboardController;
 use App\Controllers\LandingController;
 use App\Controllers\ProfileController;
-use App\Middleware\AdminMiddleware;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\ProfileMiddleware;
 use App\Middleware\SubscriptionMiddleware;
@@ -26,18 +26,22 @@ return function (App\Support\Router $router): void {
     $router->get('/reset-password', [AuthController::class, 'showResetPassword']);
     $router->post('/reset-password', [AuthController::class, 'resetPassword']);
 
-    $core = [AuthMiddleware::class, TenantMiddleware::class, SubscriptionMiddleware::class];
-    $router->get('/dashboard', [DashboardController::class, 'index'], $core);
-    $router->get('/profile', [ProfileController::class, 'show'], $core);
-    $router->post('/profile', [ProfileController::class, 'update'], $core);
-    $router->post('/profile/change-password', [ProfileController::class, 'changePassword'], $core);
+    $authTenant = [AuthMiddleware::class, TenantMiddleware::class];
+    $authTenantSub = [AuthMiddleware::class, TenantMiddleware::class, SubscriptionMiddleware::class];
+
+    $router->get('/dashboard', [DashboardController::class, 'index'], $authTenantSub);
+    $router->get('/profile', [ProfileController::class, 'show'], $authTenantSub);
+    $router->post('/profile', [ProfileController::class, 'update'], $authTenantSub);
+    $router->post('/profile/change-password', [ProfileController::class, 'changePassword'], $authTenantSub);
 
     $router->get('/admin', [AdminController::class, 'index'], [AuthMiddleware::class, TenantMiddleware::class, ProfileMiddleware::class . ':owner,admin']);
 
-    $router->get('/billing-required', [LandingController::class, 'billingRequired']);
-
-    // suporte de verbos adicionais
-    $router->put('/profile', [ProfileController::class, 'update'], $core);
-    $router->patch('/profile', [ProfileController::class, 'update'], $core);
-    $router->delete('/profile', [ProfileController::class, 'show'], [AuthMiddleware::class, TenantMiddleware::class, ProfileMiddleware::class . ':owner']);
+    // Billing / checkout (acessível com trial expirado)
+    $router->get('/billing/plans', [BillingController::class, 'plans'], $authTenant);
+    $router->get('/billing/checkout', [BillingController::class, 'checkoutPage'], $authTenant);
+    $router->post('/billing/checkout', [BillingController::class, 'checkout'], $authTenant);
+    $router->get('/billing/payment-status', [BillingController::class, 'paymentStatus'], $authTenant);
+    $router->get('/billing/history', [BillingController::class, 'history'], $authTenant);
+    $router->get('/billing/subscription', [BillingController::class, 'subscription'], $authTenant);
+    $router->post('/billing/change-plan', [BillingController::class, 'changePlan'], $authTenant);
 };
