@@ -1,0 +1,96 @@
+MozConecta - Guia rápido para rodar no Windows
+===========================================
+
+Pré-requisitos
+--------------
+1) Windows 10/11
+2) PHP 8.2+ (com extensões: pdo_mysql, openssl, curl, mbstring, json)
+3) MySQL 8+
+4) Composer 2+
+5) Git (opcional, para clonar)
+
+Passo 1: obter o código
+-----------------------
+- Via Git:
+  git clone <url-do-repositorio>
+  cd MozConecta
+
+Passo 2: configurar ambiente
+----------------------------
+1) Copie o arquivo de ambiente:
+   copy .env.example .env
+
+2) Edite o .env com seus dados locais, no mínimo:
+   - APP_URL=http://localhost:8080
+   - DB_HOST=127.0.0.1
+   - DB_PORT=3306
+   - DB_DATABASE=mozconecta
+   - DB_USERNAME=root
+   - DB_PASSWORD=sua_senha
+
+3) Para integração Débito (produção/homolog):
+   - DEBITO_BASE_URL=https://my.debito.co.mz
+   - DEBITO_TOKEN=... (ou DEBITO_EMAIL/DEBITO_PASSWORD)
+   - DEBITO_WALLET_ID_MPESA=...
+   - DEBITO_WALLET_ID_EMOLA=...
+   - DEBITO_CALLBACK_URL=... (opcional)
+
+Passo 3: instalar dependências
+------------------------------
+- No PowerShell/CMD, na raiz do projeto:
+  composer install
+
+Passo 4: criar base de dados
+----------------------------
+1) Crie o banco no MySQL:
+   CREATE DATABASE mozconecta CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+2) Rode as migrations em ordem (exemplo com mysql CLI):
+   mysql -u root -p mozconecta < database/migrations/001_core_multitenant.sql
+   mysql -u root -p mozconecta < database/migrations/002_auth_onboarding_security.sql
+   mysql -u root -p mozconecta < database/migrations/003_billing_debito.sql
+   mysql -u root -p mozconecta < database/migrations/004_whatsapp_instances.sql
+   mysql -u root -p mozconecta < database/migrations/005_inbox_crm_pipeline.sql
+   mysql -u root -p mozconecta < database/migrations/006_tasks_flows_automation.sql
+   mysql -u root -p mozconecta < database/migrations/007_ai_hybrid_engine.sql
+   mysql -u root -p mozconecta < database/migrations/008_campaigns_internet_notifications.sql
+   mysql -u root -p mozconecta < database/migrations/009_debito_production_hardening.sql
+
+3) Rode os seeds:
+   mysql -u root -p mozconecta < database/seeds/001_subscription_statuses.sql
+   mysql -u root -p mozconecta < database/seeds/002_roles_permissions.sql
+   mysql -u root -p mozconecta < database/seeds/003_plans.sql
+   mysql -u root -p mozconecta < database/seeds/004_master_admin.sql
+
+Passo 5: permissões de escrita
+------------------------------
+- Garanta que a pasta storage exista e seja gravável:
+  - storage/logs
+  - storage/cache
+
+Passo 6: subir aplicação local
+------------------------------
+- Opção simples com servidor embutido do PHP:
+  php -S localhost:8080 -t public
+
+- Acesse no navegador:
+  http://localhost:8080
+
+Passo 7: testes rápidos
+-----------------------
+- Rodar smoke tests:
+  composer test
+
+- Ou direto:
+  tests\smoke.sh
+
+Observações para Windows
+------------------------
+1) Se usar PowerShell e houver bloqueio de scripts:
+   Set-ExecutionPolicy -Scope Process Bypass
+
+2) Se tests\smoke.sh não executar no CMD/PowerShell puro, rode os checks manualmente:
+   php -l public/index.php
+   php -l bootstrap/app.php
+
+3) Recomenda-se usar Git Bash ou WSL para melhor compatibilidade de scripts .sh.
